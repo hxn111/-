@@ -24,44 +24,30 @@
 
 <script type="text/javascript">
     window._AMapSecurityConfig = {
-      securityJsCode: " ",
+      securityJsCode: "xxxxxxxxxx", //申请好的Web端开发者 安全密钥
     };
   </script>
   <script src="https://webapi.amap.com/loader.js"></script>
   <script type="text/javascript">
     AMapLoader.load({
-      key: " ", //申请好的Web端开发者 Key，调用 load 时必填
+      key: "xxxxxxx", //申请好的Web端开发者 Key，调用 load 时必填
       version: "2.0", //指定要加载的 JS API 的版本，缺省时默认为 1.4.15
     })
       .then((AMap) => {
 
-  // //1 可以控制zoom但不能隐藏其他图层
-  // //初始化地图
-  // var map = new AMap.Map('container', 
-  // {
-  //     zoom: 18, //地图级别>=17就可以显示室内
-  //     center: [116.519009,39.924544], //地图中心点
-  //     showLabel: false, //不显示地图文字标记
-  //     showIndoorMap: true, //显示室内平面
-  // });
-
-  // 2 可以隐藏其他图层但不能控制zoom
-  // AMap.plugin(['AMap.IndoorMap'], function() //这句没啥用
-  // {
-    var indoorMap = new AMap.IndoorMap({alwaysShow:true});
-    //设定在没有矢量底图的时候也显示，默认情况下室内图仅在有矢量底图的时候显示
-    var map = new AMap.Map('container',
-    {
-        // resizeEnable: true,
-        // showIndoorMap: false,//隐藏地图自带的室内地图图层
-        showLabel: false, //不显示地图文字标记
-        layers:[indoorMap],
-        // zoom:18, //不管事
-    });
-    indoorMap.showIndoorMap('B000A856LJ',4); //（POIID，指定楼层）
-  // });
-
+  //创建地图
+  var indoorMap = new AMap.IndoorMap({alwaysShow:true}); //创建indoormap图层
+  indoorMap.showIndoorMap('B000A856LJ',3); //（POIID，指定楼层）
+  var map = new AMap.Map('container', 
+  {
+    zoom: 18, //地图缩放级别，>17就可以显示室内
+    center: [116.519009,39.924544], //地图中心点，注意需要与poiid对应
+    showLabel: false, //不显示地图文字标记
+    showIndoorMap: true, //显示室内平面
+    layers:[indoorMap], //只显示室内，如果想全部显示需要加入new AMap.TileLayer()
+  });
   })
+      
       .catch((e) => {
         console.error(e); //加载错误提示
       });
